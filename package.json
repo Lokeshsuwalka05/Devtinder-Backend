@@ -1,0 +1,29 @@
+{
+  "name": "devtinder-backend",
+  "version": "1.0.0",
+  "description": "Place Of Developers",
+  "keywords": [
+    "Nodejs",
+    "javascript"
+  ],
+  "homepage": "https://github.com/Lokeshsuwalka05/Devtinder-Backend#readme",
+  "bugs": {
+    "url": "https://github.com/Lokeshsuwalka05/Devtinder-Backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lokeshsuwalka05/Devtinder-Backend.git"
+  },
+  "license": "ISC",
+  "author": "Lokesh Suwalka",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start":"node src/app.js",
+    "dev":"nodemon src/app.js"
+
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
