@@ -1,18 +1,19 @@
 const express = require("express");
 const app = express();
 
-const { adminAuth, userAuth } = require("./middlewares/auth");
+// const { adminAuth, userAuth } = require("./middlewares/auth");
 
-app.use("/admin", adminAuth);
-app.get("/admin/getAllData", (req, res) => {
-  res.send("data Read successfully");
+app.get("/admin/getAllData", (req, res, next) => {
+  throw new Error("afojdshhius");
 });
-app.post("/admin/createData", (req, res) => {
-  res.send("User Added");
+app.get("/admin/getAllData", (req, res, next) => {
+  console.log("hello mai aa raha hu");
+  res.send("data read successfully");
 });
 
-app.get("/user", userAuth, (req, res) => {
-  res.send("data Read successfully");
+//this was the error handling middleware
+app.use((err, req, res, next) => {
+  res.status(500).send("something went wrong");
 });
 
 app.listen(3000, () => {
