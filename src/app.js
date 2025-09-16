@@ -11,7 +11,7 @@ app.get("/admin/getAllData", (req, res, next) => {
   res.send("data read successfully");
 });
 
-//this was the error handling middleware
+//this is the error handling middleware
 app.use((err, req, res, next) => {
   res.status(500).send("something went wrong");
 });
