@@ -2,10 +2,12 @@ const express = require("express");
 const app = express();
 const { connectDB } = require("./config/Database");
 const { User } = require("./models/user");
+
 app.use(express.json());
 app.post("/signup", async (req, res) => {
   //made instance of the User Model
   const user = new User(req.body);
+  console.log(req.body);
   try {
     await user.save();
     res.send("User Added successfully");
@@ -48,11 +50,29 @@ app.delete("/user", async (req, res) => {
   }
 });
 //update a user by id
-app.patch("/user", async (req, res) => {
-  const Id = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+  const Id = req.params.userId;
   const data = req.body;
   console.log(Id, data);
   try {
+    const ALLOWED_UPDATES = [
+      "firstName",
+      "lastName",
+      "age",
+      "gender",
+      "about",
+      "skills",
+      "photoUrl",
+    ];
+    const isAllowedUpdate = Object.keys(data).every((k) =>
+      ALLOWED_UPDATES.includes(k)
+    );
+    if (!isAllowedUpdate) {
+      throw new Error("Invalid Update Fields");
+    }
+    if (data.skills?.length > 10) {
+      throw new Error("Skills can not be more than 10");
+    }
     const user = await User.findByIdAndUpdate(Id, data, {
       runValidators: true,
     });
@@ -62,7 +82,7 @@ app.patch("/user", async (req, res) => {
       res.send("Update successfully");
     }
   } catch (e) {
-    res.status(400).send("Something went wrong" + e.message);
+    res.status(400).send("Something went wrong:" + " " + e.message);
   }
 });
 //update a user by Email
