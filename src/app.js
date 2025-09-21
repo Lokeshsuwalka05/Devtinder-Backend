@@ -29,14 +29,10 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { emailId, password } = req.body;
-    console.log(emailId);
-    //check for mailId
     const user = await User.findOne({ emailId: emailId });
-    console.log(user);
     if (!user) {
       throw new Error("Invalid Credentials");
     }
-    //check for password
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (isPasswordMatch) {
       res.send("login successfully..");
@@ -115,19 +111,7 @@ app.patch("/user/:userId", async (req, res) => {
     res.status(400).send("Something went wrong:" + " " + e.message);
   }
 });
-//update a user by Email
-app.patch("/userByEmail", async (req, res) => {
-  const emailId = req.body.emailId;
-  const data = req.body;
-  console.log(emailId, data);
-  try {
-    const user = await User.findOneAndUpdate({ emailId: emailId }, data);
-    console.log(user);
-    res.send("Update successfully");
-  } catch (e) {
-    res.status(400).send("Something went wrong");
-  }
-});
+
 connectDB()
   .then(() => {
     console.log("Database connection established....");
