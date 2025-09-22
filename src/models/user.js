@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
-var validator = require("validator");
+const validator = require("validator");
 const { default: isEmail } = require("validator/lib/isEmail");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+require("dotenv").config();
+const JWT_SECRET = process.env.JWT_SECRET;
 const userSchema = new mongoose.Schema(
   {
     firstName: {
@@ -98,6 +102,21 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+//instance methods
+userSchema.methods.getJWT = function () {
+  const user = this;
+  const id = this.id;
+  const token = jwt.sign({ _id: id }, JWT_SECRET, { expiresIn: "1d" });
+  return token;
+};
+userSchema.methods.isPasswordMatch = async function (passwordEnterByUser) {
+  const user = this;
+  const isPasswordMatch = await bcrypt.compare(
+    passwordEnterByUser,
+    user.password
+  );
+  return isPasswordMatch;
+};
 // creating user model by using userSchema
 const User = mongoose.model("User", userSchema);
 module.exports = { User };
