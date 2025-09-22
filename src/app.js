@@ -3,11 +3,13 @@ const app = express();
 const { connectDB } = require("./config/Database");
 const { User } = require("./models/user");
 const { validateSignupData } = require("./utils/validateSignupData");
+require("dotenv").config();
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "lokesh@#!2002";
+const JWT_SECRET = process.env.JWT_SECRET;
+const { userAuth } = require("./middlewares/auth");
 app.use(cookieParser());
 app.use(express.json());
 app.post("/signup", async (req, res) => {
@@ -39,7 +41,15 @@ app.post("/login", async (req, res) => {
     }
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (isPasswordMatch) {
-      res.send("login successfully..");
+      //create a jwt token
+      const id = user.id;
+      const token = jwt.sign({ _id: id }, JWT_SECRET, { expiresIn: "1d" });
+      //put this inside the cookie and send back to the client
+      res.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000, //same as token expiry
+      });
+      res.status(200).json({ message: "Login successful" });
     } else {
       throw new Error("Invalid Credentials");
     }
@@ -47,22 +57,19 @@ app.post("/login", async (req, res) => {
     res.status(400).send("Error: " + e.message);
   }
 });
-app.get("/profile", async (req, res) => {
+app.get("/profile", userAuth, async (req, res) => {
   try {
-    const { token } = req.cookies;
-    if (!token) {
-      throw new Error("Invalid token");
-    }
-    const decodedMessage = jwt.verify(token, JWT_SECRET);
-    const user = await User.findById(decodedMessage._id);
-    if (!user) {
-      throw new Error("User does not exist");
-    }
+    const user = req.user;
+    console.log(user);
     res.send({ message: "profile accessed", user: user });
   } catch (e) {
     res.status(400).send("Eroor: " + e.message);
   }
 });
+app.post("/sendConnectionRequest", userAuth, async (req, res) => {
+  res.send("conncection request succesfully");
+});
+
 app.get("/user", async (req, res) => {
   const userEmail = req.body.emailId;
   try {
