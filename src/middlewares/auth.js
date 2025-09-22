@@ -15,12 +15,11 @@ const userAuth = async (req, res, next) => {
     }
     req.user = user;
     next();
-  } else {
-    res.status(401).send("Check your credentials and try again");
+  } catch (e) {
+    res.status(400).send("Error: " + e.message);
   }
 };
 
 module.exports = {
-  adminAuth,
   userAuth,
 };
