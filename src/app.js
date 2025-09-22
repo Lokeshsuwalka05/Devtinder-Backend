@@ -5,6 +5,10 @@ const { User } = require("./models/user");
 const { validateSignupData } = require("./utils/validateSignupData");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = "lokesh@#!2002";
+app.use(cookieParser());
 app.use(express.json());
 app.post("/signup", async (req, res) => {
   try {
@@ -41,6 +45,22 @@ app.post("/login", async (req, res) => {
     }
   } catch (e) {
     res.status(400).send("Error: " + e.message);
+  }
+});
+app.get("/profile", async (req, res) => {
+  try {
+    const { token } = req.cookies;
+    if (!token) {
+      throw new Error("Invalid token");
+    }
+    const decodedMessage = jwt.verify(token, JWT_SECRET);
+    const user = await User.findById(decodedMessage._id);
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    res.send({ message: "profile accessed", user: user });
+  } catch (e) {
+    res.status(400).send("Eroor: " + e.message);
   }
 });
 app.get("/user", async (req, res) => {
