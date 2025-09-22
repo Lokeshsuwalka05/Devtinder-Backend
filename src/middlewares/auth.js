@@ -1,17 +1,19 @@
-const adminAuth = (req, res, next) => {
-  const token = "xyz";
-  const isAuthenticated = token === "xyz";
-  if (isAuthenticated) {
-    next();
-  } else {
-    res.status(401).send("Check your credentials and try again");
-  }
-};
-
-const userAuth = (req, res, next) => {
-  const token = "xyz";
-  const isAuthenticated = token === "xyzr";
-  if (isAuthenticated) {
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = process.env.JWT_SECRET;
+const { User } = require("../models/user.js");
+const userAuth = async (req, res, next) => {
+  try {
+    const { token } = req.cookies;
+    if (!token) {
+      throw new Error("Invlid token");
+    }
+    const decodedUserInfo = jwt.verify(token, JWT_SECRET);
+    const { _id } = decodedUserInfo;
+    const user = await User.findById(_id);
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    req.user = user;
     next();
   } else {
     res.status(401).send("Check your credentials and try again");
