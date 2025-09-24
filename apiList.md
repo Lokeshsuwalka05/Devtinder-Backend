@@ -2,9 +2,9 @@
 
 ## authRouter
 
-- Post /auth/signup
-- Post /auth/login
-- Post /auth/logout
+- Post /signup
+- Post /login
+- Post /logout
 
 ## profileRouter
 
