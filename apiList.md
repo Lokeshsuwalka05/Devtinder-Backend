@@ -9,7 +9,7 @@
 ## profileRouter
 
 - GET/profile/view
-- Patch/profile/edit
+- PATCH/profile/edit
 - PATCH/prfile/password
 
 ## connectionRequestRouter

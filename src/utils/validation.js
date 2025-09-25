@@ -12,4 +12,20 @@ const validateSignupData = (data) => {
   }
 };
 
-module.exports = { validateSignupData };
+const validateUpdateData = (data) => {
+  const AllowedEdit = [
+    "firstName",
+    "lastName",
+    "age",
+    "gender",
+    "about",
+    "skills",
+    "photoUrl",
+  ];
+  const isAllowed = Object.keys(data).every((key) => AllowedEdit.includes(key));
+  if (!isAllowed) {
+    throw new Error("Invalid Update request");
+  }
+};
+
+module.exports = { validateSignupData, validateUpdateData };
