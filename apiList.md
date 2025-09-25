@@ -10,7 +10,7 @@
 
 - GET/profile/view
 - PATCH/profile/edit
-- PATCH/prfile/password
+- PATCH/profile/password //Update password api
 
 ## connectionRequestRouter
 
