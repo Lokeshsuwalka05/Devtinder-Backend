@@ -31,7 +31,7 @@ authRouter.post("/login", async (req, res) => {
     if (!user) {
       throw new Error("Invalid Credentials");
     }
-    const isPasswordMatch = user.isPasswordMatch(password);
+    const isPasswordMatch = await user.isPasswordMatch(password);
     if (isPasswordMatch) {
       //create a jwt token
       const token = user.getJWT();
