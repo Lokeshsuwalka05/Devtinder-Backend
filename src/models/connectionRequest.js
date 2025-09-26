@@ -24,7 +24,7 @@ connectionRequestSchema.pre("save", function (next) {
     connectionRequest.fromUserId.toString() ===
     connectionRequest.toUserId.toString()
   ) {
-    const err = new Error("Cannot send connection request to yourself");
+    const err = new Error("Cannot Send Connection request to yourself");
     return next(err);
   }
   next();
