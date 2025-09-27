@@ -1,4 +1,5 @@
 const validator = require("validator");
+const mongoose = require("mongoose");
 const validateSignupData = (data) => {
   const { firstName, lastName, emailId, password } = data;
   if (!firstName) {
@@ -28,4 +29,20 @@ const validateUpdateData = (data) => {
   }
 };
 
-module.exports = { validateSignupData, validateUpdateData };
+const validateObjectIdParam = (userId) => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return {
+      isValid: false,
+      error: `Invalid userId format`,
+      received: userId,
+      expectedFormat: "24-character hexadecimal string",
+    };
+  }
+  return { isValid: true };
+};
+
+module.exports = {
+  validateSignupData,
+  validateUpdateData,
+  validateObjectIdParam,
+};
