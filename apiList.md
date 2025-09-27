@@ -16,6 +16,9 @@
 
 - POST/request/send/interested/:userId
 - POST/request/send/ignored/:userId
+- we can make above apis dynamic
+- POST/request/send/:status/:userId
+
 - POST/request/review/accepted/:requestID
 - POST/request/review/rejected/:requestID
 
