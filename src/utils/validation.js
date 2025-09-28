@@ -33,7 +33,7 @@ const validateObjectIdParam = (userId) => {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return {
       isValid: false,
-      error: `Invalid userId format`,
+      error: `Invalid Id format`,
       received: userId,
       expectedFormat: "24-character hexadecimal string",
     };
