@@ -90,12 +90,12 @@ requestRouter.post(
           .status(404)
           .json({ error: "Connection request not found or already processed" });
       }
-      connectionRequest.status = "accepted";
-      await connectionRequest.save();
+      connectionRequest.status = status;
+      const data = await connectionRequest.save();
       // Send success response
       res.status(200).json({
         message: `Connection request ${status} successfully`,
-        connectionRequest: connectionRequest,
+        connectionRequest: data,
       });
     } catch (e) {
       res.status(400).json({ error: e.message });
