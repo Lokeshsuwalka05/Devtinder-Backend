@@ -1,23 +1,28 @@
 const mongoose = require("mongoose");
-const connectionRequestSchema = new mongoose.Schema({
-  fromUserId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
-  },
-  toUserId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
-  },
-  status: {
-    type: String,
-    enum: {
-      values: ["interested", "ignored", "accepted", "rejected"],
-      message: "{VALUE} is not supported",
+const connectionRequestSchema = new mongoose.Schema(
+  {
+    fromUserId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+    toUserId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+    status: {
+      type: String,
+      enum: {
+        values: ["interested", "ignored", "accepted", "rejected"],
+        message: "{VALUE} is not supported",
+      },
     },
   },
-});
+  {
+    timestamps: true,
+  }
+);
 
 //connectionRequestSchema pre save function
 connectionRequestSchema.pre("save", function (next) {
