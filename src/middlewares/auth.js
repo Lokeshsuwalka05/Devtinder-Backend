@@ -6,7 +6,7 @@ const userAuth = async (req, res, next) => {
   try {
     const { token } = req.cookies;
     if (!token) {
-      throw new Error("Invlid token");
+      return res.status(401).send({ message: "Please Login First" });
     }
     const decodedUserInfo = jwt.verify(token, JWT_SECRET);
     const { _id } = decodedUserInfo;
