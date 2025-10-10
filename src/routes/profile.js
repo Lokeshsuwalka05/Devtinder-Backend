@@ -4,6 +4,7 @@ const { userAuth } = require("../middlewares/auth");
 const { validateUpdateData } = require("../utils/validation");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const USER_SAFE_DATA = "firstName lastName age about skills photoUrl gender";
 profileRouter.get("/profile/view", userAuth, async (req, res) => {
   try {
     const user = req.user;
@@ -22,7 +23,10 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
     await loggedInUser.save();
     res
       .status(200)
-      .json({ message: "updated successfully", updatedUser: loggedInUser });
+      .json({
+        message: "Profile updated successfully",
+        updatedUserData: loggedInUser,
+      });
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
