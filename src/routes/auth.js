@@ -19,8 +19,16 @@ authRouter.post("/signup", async (req, res) => {
       password: passwordHash,
     });
     await user.save();
-    res.send("User Added successfully");
+    const token = user.getJWT();
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, //same as token expiry
+    });
+    res.status(400).json({ message: "User Added successfully" });
   } catch (e) {
+    if (e.code === 11000) {
+      return res.status(400).json({ message: "Email ID already exists" });
+    }
     res.status(400).send("Error" + ":" + e.message);
   }
 });

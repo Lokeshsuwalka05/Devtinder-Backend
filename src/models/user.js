@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema(
     },
     about: {
       type: String,
-      default: "I will learn javascript for Sure",
+      default: "This is the default about of the user",
     },
     skills: {
       type: [String],
@@ -64,13 +64,8 @@ const userSchema = new mongoose.Schema(
     },
     photoUrl: {
       type: String,
-      default: function () {
-        if (this.gender === "male") {
-          return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcn0QNLLEGdAoT913xPyxqc7_Grb4Hdp-M4rVyJVbN2T_uN7-xFcFxpyY&s";
-        } else if (this.gender === "female") {
-          return "https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/default-profile-picture-grey-female-icon.png";
-        }
-      },
+      default:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcn0QNLLEGdAoT913xPyxqc7_Grb4Hdp-M4rVyJVbN2T_uN7-xFcFxpyY&s",
       validate: {
         validator: function (value) {
           return validator.isURL(value);
@@ -86,6 +81,7 @@ const userSchema = new mongoose.Schema(
 //instance methods
 userSchema.methods.getJWT = function () {
   const user = this;
+  //here this.id is a mongoose getter that's why it directly returns a id
   const id = this.id;
   const token = jwt.sign({ _id: id }, JWT_SECRET, { expiresIn: "1d" });
   return token;
