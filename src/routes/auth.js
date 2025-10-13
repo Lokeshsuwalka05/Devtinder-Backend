@@ -24,7 +24,7 @@ authRouter.post("/signup", async (req, res) => {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, //same as token expiry
     });
-    res.status(200).json({ message: "User Added successfully" });
+    res.status(200).json({ message: "User signed up successfully" });
   } catch (e) {
     if (e.code === 11000) {
       return res.status(400).json({ message: "Email ID already exists" });
