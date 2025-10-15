@@ -31,7 +31,7 @@ authRouter.post("/signup", async (req, res) => {
     if (e.code === 11000) {
       return res.status(400).json({ message: "Email ID already exists" });
     }
-    res.status(400).send("Error" + ":" + e.message);
+    res.status(400).json({ message: e.message });
   }
 });
 authRouter.post("/login", async (req, res) => {
