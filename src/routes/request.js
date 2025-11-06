@@ -4,6 +4,7 @@ const { userAuth } = require("../middlewares/auth");
 const { ConnectionRequest } = require("../models/connectionRequest");
 const { User } = require("../models/user");
 const { validateObjectIdParam } = require("../utils/validation");
+const { run } = require("../utils/sendEmail");
 requestRouter.post(
   "/request/send/:status/:userId",
   userAuth,
@@ -51,6 +52,17 @@ requestRouter.post(
       }
 
       await connectionRequest.save();
+      const result = await run(
+        `A Connection request Received`,
+        `${
+          req.user.firstName[0].toUpperCase() +
+          req.user.firstName.slice(1) +
+          " " +
+          req.user.lastName[0].toUpperCase() +
+          req.user.lastName.slice(1)
+        } sent you a connection request.`
+      );
+      console.log(result);
       res.send("conncection request succesfully");
     } catch (e) {
       res.status(400).json({ error: e.message });
