@@ -62,7 +62,6 @@ requestRouter.post(
           req.user.lastName.slice(1)
         } sent you a connection request.`
       );
-      console.log(result);
       res.send("conncection request succesfully");
     } catch (e) {
       res.status(400).json({ error: e.message });
