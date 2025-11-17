@@ -72,6 +72,13 @@ const userSchema = new mongoose.Schema(
         message: "Invalid Photo Url",
       },
     },
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+    membershipType: {
+      type: String,
+    },
   },
   {
     timestamps: true,
