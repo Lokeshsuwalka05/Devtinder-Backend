@@ -28,9 +28,8 @@ paymentRouter.post("/create/order", userAuth, async (req, res) => {
     };
     Razorpay_instance.orders.create(options, async (err, order) => {
       try {
-        console.log(order);
         const { amount, currency, entity, id, notes, status } = order;
-        console.log(entity);
+
         const Payment_info = new Payment({
           userID: _id,
           firstName,
@@ -66,17 +65,13 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
       process.env.Razorpay_webhook_secret
     );
     if (!isValidWebhook) {
-      return res
-        .statusCode(400)
-        .send({ message: "Webhook signature is invalid" });
+      return res.status(400).send({ message: "Webhook signature is invalid" });
     }
     //update the payment status in your db
     const paymentDetails = req.body.payload.payment.entity;
     const payment = await Payment.findOne({
       Order_id: paymentDetails.order_id,
     });
-    console.log("payment", payment);
-    console.log("paymentDetails", paymentDetails);
     payment.status = paymentDetails.status;
     await payment.save();
     //mark the user as premium
@@ -85,9 +80,7 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
     user.membershipType = paymentDetails.notes.type;
     await user.save();
     //return success response to razorpay
-    return res
-      .statusCode(200)
-      .JSON({ message: "Web hook received successfully" });
+    return res.status(200).json({ message: "Web hook received successfully" });
     // if (req.body.event === "payment.captured") {
     // }
     // if (req.body.event === "payment.failed") {
@@ -95,5 +88,12 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+});
+paymentRouter.get("/premium/verify", userAuth, async (req, res) => {
+  const user = req.user;
+  if (user.isPremium === true) {
+    return res.status(200).json({ isPremium: true });
+  }
+  return res.status(200).json({ isPremium: false });
 });
 module.exports = { paymentRouter };
