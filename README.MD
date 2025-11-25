@@ -10,7 +10,7 @@
 
 **Production-ready Node.js backend powering the DevTinder developer-matching platform**
 
-[Live API](https://thedevtinder.live/api) • [Frontend Repo](https://github.com/Lokeshsuwalka05/Devtinder-Backend) • [Documentation](#-api--socket-endpoints) • [Report Bug](https://github.com/Lokeshsuwalka05/Devtinder-Backend/issues)
+[Live API](https://thedevtinder.live/api) • [Frontend Repo](https://github.com/Lokeshsuwalka05/Devtinder-Frontend) • [Documentation](#-api--socket-endpoints) • [Report Bug](https://github.com/Lokeshsuwalka05/Devtinder-Backend/issues)
 
 </div>
 
